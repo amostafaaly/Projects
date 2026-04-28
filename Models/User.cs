@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Projects.Models
+﻿namespace Projects.Models
 {
-    public abstract class User:BaseEntity
+    public abstract class User
     {
+        public string Id { get; protected set; } = string.Empty;
 
-            
-        public User(int id, string name)
+        public string Name { get; protected set; } = string.Empty;
+
+        public string UniversityEmail { get; protected set; } = string.Empty;
+
+        protected User()
         {
-            Id = id;
-            Name = name;
         }
-
-        public abstract void DisplayInfo();
-       
     }
 }
