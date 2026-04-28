@@ -1,4 +1,4 @@
-namespace SchoolManagementSystem.Models
+namespace Projects.Models
 {
     // enums 3shan both nst5dmha fe Student w Instructor
     public enum Faculty
@@ -21,6 +21,11 @@ namespace SchoolManagementSystem.Models
     {
         FullTime,
         PartTime
-        
+    }
+
+    public enum StudentLevel
+    {
+        Undergraduate,
+        Graduate
     }
 }
