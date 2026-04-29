@@ -2,7 +2,7 @@ namespace Projects.Models
 {
     using Projects.Interfaces;
 
-    public class Instructor : User
+    public abstract class Instructor : User
     {
         public int HiringYear { get; init; }
 
@@ -47,6 +47,7 @@ namespace Projects.Models
         {
             Status = newStatus;
         }
+        public abstract decimal CalculateSalary();
 
         public string GetDetails() =>
             $"Instructor: {Name} (ID: {Id}, Faculty: {Faculty}, Status: {Status})";

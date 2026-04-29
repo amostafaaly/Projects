@@ -1,4 +1,5 @@
-﻿using SchoolManagementSystem.Models;
+﻿using Projects.Interfaces;
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,8 +10,8 @@ namespace Projects.Models
     {
         public decimal MonthlySalary { get; set; }
 
-        public FulltimeInstructor   (int id, string name, FulltimeInstructor status,string faculty,decimal salary)
-            : base(id, name,InstructorStatus.FullTime,faculty)
+        public FulltimeInstructor   (string firstName, string lastName, Faculty faculty, int hiringYear, IInstructorIdGenerator idGenerator, IInstructorEmailGenerator emailGenerator, decimal salary)
+            : base(firstName, lastName, faculty, hiringYear, idGenerator, emailGenerator)
         {
             MonthlySalary = salary;
         }

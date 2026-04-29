@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Projects.Services.TaskManager
 {
-    public class GenericManager<T> : IManager<T> where T :  BaseEntity
+    public class GenericManager<T> : IManager<T> where T :BaseEntity
     {
         private List<T> items;
 
@@ -28,10 +28,9 @@ namespace Projects.Services.TaskManager
             return items;
         }
 
-        public T GetById(int id)
+        public T GetById(string id)
         {
-            if (id <= 0)
-                throw new ArgumentOutOfRangeException("Id must be greater than zero.");
+            
 
             var item = items.Find(x => x.Id == id);
 
@@ -40,6 +39,8 @@ namespace Projects.Services.TaskManager
 
             return item;
         }
+
+       
 
         public void Remove(T entity)
         {
@@ -80,6 +81,7 @@ namespace Projects.Services.TaskManager
                 throw new KeyNotFoundException("Entity not found.");
 
             item.Name = entity.Name;
+
         }
     }
 }
