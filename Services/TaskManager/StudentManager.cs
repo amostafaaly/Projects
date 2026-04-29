@@ -3,8 +3,9 @@ namespace Projects.Services
 	using System.Collections.Generic;
 	using Projects.Interfaces;
 	using Projects.Models;
+    using Projects.Services.TaskManager;
 
-	public class StudentManager
+    public class StudentManager
 	{
 		private readonly Dictionary<string, Student> _students = new();
 		private readonly IStudentIdGenerator _idGenerator;
