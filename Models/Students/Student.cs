@@ -1,7 +1,5 @@
 namespace Projects.Models
 {
-	using Projects.Interfaces;
-
 	public class Student : User
 	{
 		public int EnrollmentYear { get; init; }
@@ -19,8 +17,8 @@ namespace Projects.Models
 			string lastName,
 			Faculty faculty,
 			int enrollmentYear,
-			IStudentIdGenerator idGenerator,
-			IStudentEmailGenerator emailGenerator)
+			string id,
+			string email)
 		{
 			if (string.IsNullOrWhiteSpace(firstName))
 				throw new ArgumentException("First name cannot be empty.", nameof(firstName));
@@ -30,13 +28,14 @@ namespace Projects.Models
 
 			if (enrollmentYear < 1900 || enrollmentYear > DateTime.UtcNow.Year)
 				throw new ArgumentOutOfRangeException(nameof(enrollmentYear), "Enrollment year is out of valid range.");
+			if (string.IsNullOrWhiteSpace(id))
+				throw new ArgumentException("ID cannot be empty.", nameof(id));
+			if (string.IsNullOrWhiteSpace(email))
+				throw new ArgumentException("Email cannot be empty.", nameof(email));
 
-			ArgumentNullException.ThrowIfNull(idGenerator);
-			ArgumentNullException.ThrowIfNull(emailGenerator);
-
-			Id = idGenerator.GenerateId(enrollmentYear);
+			Id = id;
 			Name = $"{firstName.Trim()} {lastName.Trim()}";
-			UniversityEmail = emailGenerator.GenerateEmail(firstName.Trim(), lastName.Trim());
+			UniversityEmail = email;
 			EnrollmentYear = enrollmentYear;
 			Faculty = faculty;
 			Status = StudentStatus.Active;

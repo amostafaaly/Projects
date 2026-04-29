@@ -10,7 +10,7 @@ namespace Projects.IServices
         public void Remove(T entity);
         public void Update(T entity);
         public List<T> GetAll();
-        public T GetById(int id);
+        public T GetById(string id);
         public List<T> Search(string keyword);
 
     }
