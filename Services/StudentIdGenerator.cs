@@ -8,7 +8,7 @@ namespace Projects.Services
         public string GenerateId(int enrollmentYear)
         {
             var yearPrefix = (enrollmentYear % 100).ToString("D2");
-            var randomPart = Random.Shared.Next(100, 1000); // 3 digits
+            var randomPart = Random.Shared.Next(100, 1000); 
             return $"2{yearPrefix}{randomPart}";
         }
     }

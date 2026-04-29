@@ -7,9 +7,9 @@ namespace Projects.Services
         // Email format: first initial + last name + @msa.edu.eg
         public string GenerateEmail(string firstName, string lastName)
         {
-            var firstInitial = string.IsNullOrWhiteSpace(firstName) ? string.Empty : firstName.Trim()[0].ToString();
-            var normalizedLastName = (lastName ?? string.Empty).Replace(" ", string.Empty);
-            return $"{firstInitial.ToLower()}{normalizedLastName.ToLower()}@msa.edu.eg";
+            var firstInitial = firstName.Trim()[0].ToString();
+            var EditedLastname = lastName.Replace(" ", string.Empty);
+            return $"{firstInitial.ToLower()}{EditedLastname.ToLower()}@msa.edu.eg";
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Projects.Models
 			Faculty faculty,
 			int enrollmentYear,
 			IStudentIdGenerator idGenerator,
-			IUniversityEmailGenerator emailGenerator)
+			IStudentEmailGenerator emailGenerator)
 		{
 			if (string.IsNullOrWhiteSpace(firstName))
 				throw new ArgumentException("First name cannot be empty.", nameof(firstName));

@@ -1,6 +1,6 @@
 namespace Projects.Interfaces
 {
-    public interface IUniversityEmailGenerator
+    public interface IStudentEmailGenerator
     {
         string GenerateEmail(string firstName, string lastName);
     }
