@@ -8,11 +8,11 @@ namespace Projects.Services
 	{
 		private readonly Dictionary<string, Student> _students = new();
 		private readonly IStudentIdGenerator _idGenerator;
-		private readonly IUniversityEmailGenerator _emailGenerator;
+		private readonly IStudentEmailGenerator _emailGenerator;
 
 		public StudentManager(
 			IStudentIdGenerator idGenerator,
-			IUniversityEmailGenerator emailGenerator)
+			IStudentEmailGenerator emailGenerator)
 		{
 			ArgumentNullException.ThrowIfNull(idGenerator);
 			ArgumentNullException.ThrowIfNull(emailGenerator);
@@ -21,6 +21,7 @@ namespace Projects.Services
 			_emailGenerator = emailGenerator;
 		}
 
+		// to get all student w bardu 3sha mhdsh y2dr y access el dictionary w y3ml 7aga fyh
 		public IEnumerable<Student> AllStudents => _students.Values;
 
 		public Student RegisterStudent(
@@ -35,16 +36,59 @@ namespace Projects.Services
 			if (string.IsNullOrWhiteSpace(lastName))
 				throw new ArgumentException("Last name cannot be null or whitespace.", nameof(lastName));
 
+			var baseEmail = _emailGenerator.GenerateEmail(firstName.Trim(), lastName.Trim());
+			var uniqueEmail = GenerateUniqueEmail(baseEmail);
+			var uniqueId = GenerateUniqueId(enrollmentYear);
+
 			var student = new Student(
 				firstName,
 				lastName,
 				faculty,
 				enrollmentYear,
-				_idGenerator,
-				_emailGenerator);
+				uniqueId,
+				uniqueEmail);
 
 			_students[student.Id] = student;
 			return student;
+		}
+
+		private string GenerateUniqueEmail(string baseEmail)
+		{
+			// to check uniqness of the generated mail 
+			// lw mwgod fa bzwd 1 ex: ahmedmostafa -> ahmedmostafa1 -> ahmedmostafa2
+			var uniqueEmail = baseEmail;
+			var suffix = 1;
+
+			while (EmailExists(uniqueEmail))
+			{
+				uniqueEmail = baseEmail.Replace("@", $"{suffix}@");
+				suffix++;
+			}
+
+			return uniqueEmail;
+		}
+
+		private bool EmailExists(string email)
+		{
+			foreach (var student in _students.Values)
+			{
+				if (student.UniversityEmail == email)
+					return true;
+			}
+
+			return false;
+		}
+
+		private string GenerateUniqueId(int enrollmentYear)
+		{
+			string id;
+			do
+			{
+				id = _idGenerator.GenerateId(enrollmentYear);
+			}
+			while (_students.ContainsKey(id));
+
+			return id;
 		}
 
 		public void PromoteToGraduate(string studentId)
@@ -53,12 +97,30 @@ namespace Projects.Services
 			student.PromoteToGraduate();
 		}
 
+		public void ChangeFaculty(string studentId, Faculty newFaculty)
+		{
+			var student = GetStudent(studentId);
+			student.ChangeFaculty(newFaculty);
+		}
+
+		public void ChangeStatus(string studentId, StudentStatus newStatus)
+		{
+			var student = GetStudent(studentId);
+			student.ChangeStatus(newStatus);
+		}
+
+		public void DeleteStudent(string studentId)
+		{
+			if (!_students.Remove(studentId))
+				throw new KeyNotFoundException($"Student with ID '{studentId}' not found.");
+		}
+
 		public Student GetStudent(string id)
 		{
-			if (!_students.TryGetValue(id, out var student))
-				throw new KeyNotFoundException($"Student with ID '{id}' not found.");
+			if (_students.ContainsKey(id))
+				return _students[id];
 
-			return student;
+			throw new KeyNotFoundException($"Student with ID '{id}' not found.");
 		}
 	}
 }
