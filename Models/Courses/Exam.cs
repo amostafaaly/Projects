@@ -9,20 +9,21 @@ namespace Projects.Models
        
       
         public DateTime Date { get; set; }
-        private int _totalMarks { get; set; }
-      
-        public int CourseId { get; set; }
-       
-        public  int TotalMarks { get { return _totalMarks; }
+       private int _totalMarks;
+        public int TotalMarks
+        {
+            get => _totalMarks;
             set
             {
-                if (value<0)
-                {
-                    throw new IndexOutOfRangeException("value must be larger than zero");
-                }
+                if (value <= 0)
+                    throw new ArgumentOutOfRangeException(nameof(TotalMarks), "Total marks must be greater than zero.");
                 _totalMarks = value;
             }
         }
+
+        public int CourseId { get; set; }
+       public string StudentId { get; set; }
+       
        
     }
 }

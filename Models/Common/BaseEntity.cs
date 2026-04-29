@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Projects.Models
 {
- public class BaseEntity:User
+ public class BaseEntity
     {
         public string Id;
         public string Name;

@@ -51,5 +51,6 @@ namespace Projects.Models
 
         public string GetDetails() =>
             $"Instructor: {Name} (ID: {Id}, Faculty: {Faculty}, Status: {Status})";
+       public List<Exam> Exams { get; set; } = new List<Exam>();
     }
 }

@@ -7,7 +7,7 @@ namespace Projects.Models
     public  class Department:BaseEntity
     {
        
-       public Department(int id, string name)
+       public Department(string id, string name)
         {
             Id = id;
             Name = name;
