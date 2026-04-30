@@ -4,27 +4,22 @@ using System.Text;
 
 namespace Projects.Models
 {
-    public class Course: BaseEntity
-    {
-   
-
-        public string Description { get; set; }
-        private      int CreditHours     { get; set; }
-        public int creditHours
-        {
-            get { return CreditHours; }
-            set
-            {
-                if (value < 0)
-                    throw new ArgumentException("Credit hours cannot be negative.");
-                CreditHours = value;
-            }
-        }
-       
-
-        public int InstructorId { get; set; }
-        public List<int> StudentIds { get; set; } = new List<int>();
-       
-
-    }
+	public class Course : BaseEntity
+	{
+		public string Description { get; set; } = string.Empty;
+		private int _creditHours;
+		public int CreditHours
+		{
+			get => _creditHours;
+			set
+			{
+				if (value <= 0)
+					throw new ArgumentOutOfRangeException(nameof(CreditHours), "Credit hours must be greater than zero.");
+				_creditHours = value;
+			}
+		}
+		public string? InstructorId { get; set; }
+		public List<StudentCourse> Enrollments { get; set; } = new List<StudentCourse>();
+		public Faculty Faculty { get; set; }
+	}
 }

@@ -5,7 +5,7 @@ namespace Projects.Services
 	using Projects.Models;
     using Projects.Services.TaskManager;
 
-    public class StudentManager
+    public class StudentManager : IStudentManager
 	{
 		private readonly Dictionary<string, Student> _students = new();
 		private readonly IStudentIdGenerator _idGenerator;
