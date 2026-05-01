@@ -4,6 +4,6 @@ namespace Projects.Src.Contracts
 {
     public interface IResultManager : IManager<Result>
     {
-        void RecordExamResult(string examId, string studentId, int score);
+        public List<Result> GetResultByStudentid(string studentid);
     }
 }

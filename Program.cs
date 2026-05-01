@@ -1,9 +1,13 @@
-﻿using Projects.Src.Services;
-using Projects.Src.Utilities.Generators;
-using Projects.Src.Utilities.FileHandler;
-using Projects.Src.Contracts;
-using Projects.Src.Models;
+﻿using Projects.Src.Contracts;
 using Projects.Src.Managers;
+using Projects.Src.Models;
+using Projects.Src.SeedData;
+using Projects.Src.Services;
+using Projects.Src.UI_layer;
+using Projects.Src.Utilities.FileHandler;
+using Projects.Src.Utilities.Generators;
+
+Console.WriteLine("---------------------------------------------------------------------------------------");
 
 var studentIdGenerator = new StudentIdGenerator();
 var studentEmailGenerator = new StudentEmailGenerator();
@@ -14,80 +18,82 @@ var studentManager = new StudentManager();
 var courseManager = new CourseManager();
 var instructorManager = new InstructorManager();
 var enrollmentManager = new EnrollmentManager(courseManager, studentManager);
-var gradeManager = new GradeManager(courseManager, new GradingService());
-var examManager = new ExamManager(courseManager, enrollmentManager);
+var examManager = new ExamManager();
+var examService=new ExamService(instructorManager,examManager,studentManager);
 var resultManager = new ResultManager();
+
+var gradingService = new GradingService();
+var gradeManager = new GradeManager(courseManager, new GradingService());
 
 var studentRegistration = new StudentRegistrationService(studentManager, studentIdGenerator, studentEmailGenerator);
 var instructorRegistration = new InstructorRegistrationService(instructorManager, instructorIdGenerator, instructorEmailGenerator);
 var courseService = new CourseService(courseManager, instructorManager);
 var enrollmentService = new EnrollmentService(courseManager, studentManager, gradeManager);
-var gradingService = new GradingService();
 var resultService = new ResultService(resultManager, examManager, new ResultFileHandler(), gradingService);
-var examService = new ExamService(instructorManager, examManager, studentManager, courseManager, enrollmentManager);
+var seed = new SeedData(
+    studentRegistration,
+    instructorRegistration,
+    courseService,
+    enrollmentService,
+    resultService,
+    examManager
+);
 
-// Hena hn3ml Register a Student
-Console.WriteLine("=== Student Registration ===");
-var student = studentRegistration.RegisterStudent("Mohamed", "Ali", 2020, Faculty.Science);
-Console.WriteLine($"Student Registered: {student.Name} (ID: {student.Id})");
+seed.Run();
+Console.WriteLine("1-Make Tasks on instructor");
+Console.WriteLine("2-Make Tasks on Student");
+Console.WriteLine("3-Make Tasks on Course");
+Console.WriteLine("4-Make Tasks on Exam");
+int.TryParse(Console.ReadLine(), out int m);
+switch (m)
+{
+    case 1:
+        try
+        {
+            var instructorMenu = new InstructorMenu(instructorManager, instructorRegistration, instructorIdGenerator, instructorEmailGenerator);
+            instructorMenu.Run();
+            break;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+        break;
 
-// w hena kman Register Instructors
-Console.WriteLine("\n=== Instructor Registration ===");
-var fullTimeInstructor = instructorRegistration.RegisterFulltimeInstructor("Ahmed", "Hassan", Faculty.Science, 2015, 5000m);
-Console.WriteLine($"Full-time Instructor: {fullTimeInstructor.Name} (ID: {fullTimeInstructor.Id})");
-
-// Create el Course
-Console.WriteLine("\n=== Course Creation ===");
-var course = courseService.CreateCourse(Faculty.Science, "Introduction to Computer Science", 3, "An introductory course on computer science concepts.");
-Console.WriteLine($"Course Created: {course.Name} (ID: {course.Id})");
-
-//  Assign Instructor to Course el ehna 3mlnah already
-Console.WriteLine("\n=== Assign Instructor to Course ===");
-courseService.AssignInstructor(course.Id, fullTimeInstructor.Id);
-Console.WriteLine($"Instructor {fullTimeInstructor.Name} assigned to course {course.Name}");
-
-// hena ba enroll Student in Course 
-Console.WriteLine("\n=== Enroll Student ===");
-enrollmentService.EnrollStudent(course.Id, student.Id);
-Console.WriteLine($"{student.Name} enrolled in {course.Name}");
-
-//  Create and Schedule Exam 
-Console.WriteLine("\n=== Create and Schedule Exam ===");
-var exam = new Exam(DateTime.UtcNow.AddDays(30), 100, course.Id, student.Id, fullTimeInstructor.Id);
-exam.Id = Guid.NewGuid().ToString(); // Set exam ID
-examManager.Add(exam);
-Console.WriteLine($"Exam scheduled for {exam.Date:yyyy-MM-dd} with total marks: {exam.TotalMarks}");
-
-//  Assign Student to Exam w kda kda lazem ykon el student already enrolled in el course 3shan y2dr ykon assigned to el exam
-Console.WriteLine("\n=== Assign Student to Exam ===");
-examManager.AssignStudentToExam(exam.Id, student.Id);
-Console.WriteLine($"Student {student.Name} assigned to exam");
-
-// hena ba record Exam Result
-Console.WriteLine("\n=== Record Exam Result ===");
-resultService.AddResult(student, exam, 85);
-
-
-Console.WriteLine("\n=== Student Results ===");
-resultService.GetResultsByStudent(student);
-
-// hena ya3ny el mafrod el instructor howa el by3ml Assign Grade ll Student in Course
-Console.WriteLine("\n=== Assign Grade to Student ===");
-enrollmentService.AssignGrade(course.Id, student.Id, 85);
-Console.WriteLine($"Grade 85 assigned to {student.Name} in {course.Name}");
-
-// Calc GPA
-Console.WriteLine("\n=== Calculate Student GPA ===");
-var gpa = enrollmentService.CalculateStudentGPA(student.Id);
-Console.WriteLine($"Student GPA: {gpa}");
-
-// Example 12: Save Results to File
-Console.WriteLine("\n=== Save Results ===");
-resultService.SaveResults();
-Console.WriteLine("Results saved to file");
-
-// Example 13: Load Results from File
-Console.WriteLine("\n=== Load Results ===");
-resultService.LoadResults();
-Console.WriteLine($"Total results loaded: {resultManager.GetAll().Count}");
-
+    case 2:
+        try
+        {
+            var studentMenu = new StudentMenu(studentManager);
+            studentMenu.Run();
+            break;
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+        break;
+    case 3:
+        try
+        {
+            var courseMenu = new CourseMenu(courseService, courseManager, instructorManager);
+            courseMenu.Run();
+            break;
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+        break;
+    case 4:
+        try
+        {
+            var examMenu = new ExamMenu(examService, examManager, courseManager, studentManager, instructorManager);
+            examMenu.Run();
+            break;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+        break;
+}

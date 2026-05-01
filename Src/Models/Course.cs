@@ -42,4 +42,5 @@ namespace Projects.Src.Models;
 			InstructorId = parts[3];
 			Faculty = Enum.Parse<Faculty>(parts[4]);
 		}
+	   public string GetDetails() => $"{Id} {Description}";
     }

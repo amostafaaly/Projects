@@ -9,12 +9,12 @@ namespace Projects.Src.Services
 {
     public class ResultService : IresultService
     {
-        private readonly IManager<Result> _resultManager;
+        private readonly IResultManager _resultManager;
         private readonly IManager<Exam> _examManager;
         private readonly IFileHandler<Result> _fileHandler;
         private readonly IGradingService _gradingService;
 
-        public ResultService(IManager<Result> resultManager, IManager<Exam> examManager, IFileHandler<Result> fileHandler, IGradingService gradingService)
+        public ResultService(IResultManager resultManager, IManager<Exam> examManager, IFileHandler<Result> fileHandler, IGradingService gradingService)
         {
             _resultManager = resultManager;
             _examManager = examManager;
@@ -38,20 +38,22 @@ namespace Projects.Src.Services
             var grade = _gradingService.GetLetterGrade(result.Score, result.TotalMarks);
             Console.WriteLine($"{student.Name} got Grade: {grade}");
         }
-        public void GetResultsByStudent(Student student)
+        public void GetResultsByStudent(string studentid)
         {
-            var results = _resultManager.GetAll();
+            var results = _resultManager.GetResultByStudentid(studentid);
             if (results.Count == 0)
             {
                 Console.WriteLine("No results found.");
                 return;
             }
+           
             foreach (var result in results)
             {
                 var exam = _examManager.GetById(result.ExamId);
                 var grade = _gradingService.GetLetterGrade(result.Score, result.TotalMarks);
                 Console.WriteLine($"Exam: {exam.Name}, Score: {result.Score}, Grade: {grade}");
             }
+
 
         }
         public void SaveResults()

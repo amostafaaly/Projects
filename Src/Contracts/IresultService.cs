@@ -8,6 +8,6 @@ namespace Projects.Src.Contracts
     public interface IresultService
     {
         public void AddResult(Student student, Exam exam, int score);
-        public void GetResultsByStudent(Student student);
+        public void GetResultsByStudent(string studentid);
     }
 }

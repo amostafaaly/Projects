@@ -21,23 +21,19 @@ namespace Projects.Src.Models;
                 _totalMarks = value;
             }
         }
-        public Exam(DateTime date,  int totalMarks, string courseId, string studentId, string instructorId  )
+        public Exam(DateTime date,  int totalMarks  )
         {
             Date = date;
             TotalMarks = totalMarks;
            
-            CourseId = courseId;
-            StudentId = studentId;
-            InstructorId = instructorId;
-            Name = $"Exam-{courseId}";
         }
 
         public string CourseId { get; set; }
-       public string StudentId { get; set; }
+       
        public string InstructorId { get; set; }
         public string ToFileLine()
         {
-            return $"{Id},{Date:O},{TotalMarks},{CourseId},{StudentId},{InstructorId}";
+            return $"{Id},{Date:O},{TotalMarks}";
         }
         public void FromFileLine(string line)
         {
@@ -48,8 +44,9 @@ namespace Projects.Src.Models;
             Date = DateTime.Parse(parts[1]);
             TotalMarks = int.Parse(parts[2]);
             CourseId = parts[3];
-            StudentId = parts[4];
+         
             InstructorId = parts[5];
         }
+    public string GetDetails() => $"id: {Id} Name:{Name}";
 
     }
