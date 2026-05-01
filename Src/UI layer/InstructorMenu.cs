@@ -30,13 +30,14 @@ namespace Projects.Src.UI_layer
 
         public void Run()
         {
-            Console.WriteLine("1-register FullTime instructor");
-            Console.WriteLine("2-register PartialTime instructor");
-            Console.WriteLine("3-Remove instructor");
-            Console.WriteLine("4-Get instructor By ID");
-            Console.WriteLine("5-Display All instructor");
+            
             while (true)
             {
+                Console.WriteLine("1-register FullTime instructor");
+                Console.WriteLine("2-register PartialTime instructor");
+                Console.WriteLine("3-Remove instructor");
+                Console.WriteLine("4-Get instructor By ID");
+                Console.WriteLine("5-Display All instructor");
                 Console.WriteLine("Enter your choice (or -1 to exit): ");
                 int.TryParse(Console.ReadLine(), out int n);
                 if (n == -1) break;
@@ -104,6 +105,7 @@ namespace Projects.Src.UI_layer
                         Console.Write("Instructor ID to remove: ");
                         string removeId = Console.ReadLine();
                         var instructorToRemove = instructorManager.GetById(removeId);
+                        instructorManager.Remove( instructorToRemove );
                         break;
                     case 4:
                         Console.WriteLine("Write instructor id to Search");

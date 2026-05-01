@@ -52,6 +52,7 @@ namespace Projects.Src.UI_layer
                         break;
 
                     case 2:
+                        Console.WriteLine("enter the student id");
                         _studentManager.PromoteToGraduate(Console.ReadLine());
                         break;
 
@@ -69,13 +70,14 @@ namespace Projects.Src.UI_layer
                         Console.Write("ID: ");
                         string sid = Console.ReadLine();
 
-                        Console.Write("Status: ");
+                        Console.Write("Status: 0-active 1-graduated 3-Withdraw");
                         StudentStatus st = (StudentStatus)int.Parse(Console.ReadLine());
 
                         _studentManager.ChangeStatus(sid, st);
                         break;
 
                     case 5:
+                        Console.WriteLine("enter the id");
                         _studentManager.DeleteStudent(Console.ReadLine());
                         break;
 

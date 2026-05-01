@@ -1,4 +1,4 @@
-using Projects.Src.Contracts;
+using Projects.Src.Contracts.IManger;
 using Projects.Src.Models;
 using Projects.Src.Services;
 using Projects.Src.Utilities.Generators;

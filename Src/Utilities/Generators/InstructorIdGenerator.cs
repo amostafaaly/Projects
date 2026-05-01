@@ -1,6 +1,6 @@
 namespace Projects.Src.Utilities.Generators
 {
-    using Projects.Src.Contracts;
+    using Projects.Src.Contracts.IGenerator;
 
     public class InstructorIdGenerator : IInstructorIdGenerator
     {

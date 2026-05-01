@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Projects.Src.Contracts
+namespace Projects.Src.Contracts.IManger
 {
    public interface IManager<T> where T : class
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Projects.Src.Models;
 
-namespace Projects.Src.Contracts
+namespace Projects.Src.Contracts.IManger
 {
     public interface IGradeManager
     {

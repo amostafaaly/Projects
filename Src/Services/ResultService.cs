@@ -1,4 +1,6 @@
 ﻿using Projects.Src.Contracts;
+using Projects.Src.Contracts.IManger;
+using Projects.Src.Contracts.Iservice;
 using Projects.Src.Models;
 using Projects.Src.Utilities.FileHandler;
 using System;
@@ -22,7 +24,7 @@ namespace Projects.Src.Services
             _gradingService = gradingService ?? throw new ArgumentNullException(nameof(gradingService));
         }
 
-        public void AddResult(Student student, Exam exam, int score)
+        public Result AddResult(Student student, Exam exam, int score)
         {
             var result = new Result
             {
@@ -37,8 +39,9 @@ namespace Projects.Src.Services
 
             var grade = _gradingService.GetLetterGrade(result.Score, result.TotalMarks);
             Console.WriteLine($"{student.Name} got Grade: {grade}");
+            return result;
         }
-        public void GetResultsByStudent(string studentid)
+        public void  GetResultsByStudent(string studentid)
         {
             var results = _resultManager.GetResultByStudentid(studentid);
             if (results.Count == 0)
@@ -53,6 +56,7 @@ namespace Projects.Src.Services
                 var grade = _gradingService.GetLetterGrade(result.Score, result.TotalMarks);
                 Console.WriteLine($"Exam: {exam.Name}, Score: {result.Score}, Grade: {grade}");
             }
+           
 
 
         }

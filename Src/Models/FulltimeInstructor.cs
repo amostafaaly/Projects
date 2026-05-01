@@ -23,7 +23,8 @@ namespace Projects.Src.Models;
             : base(id, name, universityEmail, faculty, hiringYear)
         {
             MonthlySalary = salary;
-        }
+        Status = InstructorStatus.FullTime;
+    }
 
      
 

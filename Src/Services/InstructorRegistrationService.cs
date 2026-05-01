@@ -1,4 +1,5 @@
-using Projects.Src.Contracts;
+using Projects.Src.Contracts.IGenerator;
+using Projects.Src.Contracts.IManger;
 using Projects.Src.Models;
 using System;
 using System.Collections.Generic;

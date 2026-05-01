@@ -9,7 +9,7 @@ namespace Projects.Src.Models;
 
         public Faculty Faculty { get;  private set; }
 
-        public InstructorStatus Status { get;private  set; }
+        public InstructorStatus Status { get;  set; }
 
         public Instructor(
             string id,
@@ -35,7 +35,7 @@ namespace Projects.Src.Models;
             UniversityEmail = universityEmail;
             HiringYear = hiringYear;
             Faculty = faculty;
-            Status = InstructorStatus.FullTime;
+           
         }
 
         public void ChangeFaculty(Faculty newFaculty)

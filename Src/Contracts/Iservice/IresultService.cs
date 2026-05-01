@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Projects.Src.Contracts
+namespace Projects.Src.Contracts.Iservice
 {
     public interface IresultService
     {
-        public void AddResult(Student student, Exam exam, int score);
+        public Result AddResult(Student student, Exam exam, int score);
         public void GetResultsByStudent(string studentid);
     }
 }

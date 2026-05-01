@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Projects.Src.Contracts
+namespace Projects.Src.Contracts.Iservice
 {
     public  interface IExamService
     {

@@ -1,8 +1,8 @@
-﻿using Projects.Src.Contracts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Projects.Src.Models;
+using Projects.Src.Contracts.IManger;
 
 namespace Projects.Src.Managers
 {

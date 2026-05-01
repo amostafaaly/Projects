@@ -1,8 +1,7 @@
 namespace Projects.Src.Managers
 {
     using System.Collections.Generic;
-   
-    using Projects.Src.Contracts;
+    using Projects.Src.Contracts.IManger;
     using Projects.Src.Models;
 
     public class StudentManager : IStudentManager

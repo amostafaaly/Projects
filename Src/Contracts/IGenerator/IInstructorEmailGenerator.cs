@@ -1,4 +1,4 @@
-namespace Projects.Src.Contracts
+namespace Projects.Src.Contracts.IGenerator
 {
     public interface IInstructorEmailGenerator
     {

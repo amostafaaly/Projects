@@ -23,6 +23,7 @@ namespace Projects.Src.Models;
         {
             HourlyRate = hourlyRate;
             HoursWorked = hoursWorked;
+        Status = InstructorStatus.PartTime;
         }
 
         public override decimal CalculateSalary()
