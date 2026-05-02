@@ -1,4 +1,5 @@
 using Projects.Src.Contracts.IManger;
+using Projects.Src.Contracts.Iservice;
 using Projects.Src.Models;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace Projects.Src.Services
 {
-    public class CourseService
+    public class CourseService:IcourseService
     {
         private readonly ICourseManager _courseManager;
         private readonly IInstructorManager _instructorManager;

@@ -27,20 +27,6 @@ namespace Projects.Src.Models;
 		public string? InstructorId { get; set; }
 		public List<StudentCourse> Enrollments { get; set; } = new List<StudentCourse>();
 		public Faculty Faculty { get; set; }
-		public string ToFileLine()
-		{
-			return $"{Id},{Description},{CreditHours},{InstructorId},{Faculty}";
-        }	
-		public void FromFileLine(string line)
-		{
-			var parts = line.Split(',');
-			if (parts.Length != 5)
-				throw new FormatException("Invalid line format for Course.");
-			Id = parts[0];
-			Description = parts[1];
-			CreditHours = int.Parse(parts[2]);
-			InstructorId = parts[3];
-			Faculty = Enum.Parse<Faculty>(parts[4]);
-		}
+	
 	   public string GetDetails() => $"{Id} {Description}";
     }

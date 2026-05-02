@@ -31,22 +31,7 @@ namespace Projects.Src.Models;
         public string CourseId { get; set; }
        
        public string InstructorId { get; set; }
-        public string ToFileLine()
-        {
-            return $"{Id},{Date:O},{TotalMarks}";
-        }
-        public void FromFileLine(string line)
-        {
-            var parts = line.Split(',');
-            if (parts.Length != 6)
-                throw new FormatException("Invalid line format for Exam.");
-            Id = parts[0];
-            Date = DateTime.Parse(parts[1]);
-            TotalMarks = int.Parse(parts[2]);
-            CourseId = parts[3];
-         
-            InstructorId = parts[5];
-        }
+       
     public string GetDetails() => $"id: {Id} Name:{Name}";
 
     }

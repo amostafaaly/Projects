@@ -42,27 +42,5 @@ namespace Projects.Src.Models;
             Name = $"Quiz-{CourseId}";
         }
 
-        public string ToFileLine()
-        {
-            return $"{Id},{CourseId},{InstructorId},{TotalMarks},{ScheduledDate:O},{Description}";
-        }
-
-        public static Quiz FromFileLine(string line)
-        {
-            var parts = line.Split(',');
-            if (parts.Length != 6)
-                throw new FormatException("Invalid line format for Quiz.");
-
-            var quiz = new Quiz()
-            {
-                Id = parts[0],
-                CourseId = parts[1],
-                InstructorId = parts[2],
-                TotalMarks = int.Parse(parts[3]),
-                ScheduledDate = DateTime.Parse(parts[4]),
-                Description = parts[5]
-            };
-
-            return quiz;
-        }
+       
     }

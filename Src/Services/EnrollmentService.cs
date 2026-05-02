@@ -1,4 +1,5 @@
 using Projects.Src.Contracts.IManger;
+using Projects.Src.Contracts.Iservice;
 using Projects.Src.Models;
 using System;
 using System.Collections.Generic;
@@ -7,17 +8,17 @@ using System.Text;
 
 namespace Projects.Src.Services
 {
-    public class EnrollmentService
+    public class EnrollmentService: IEnrollmentService
     {
         private readonly ICourseManager _courseManager;
         private readonly IStudentManager _studentManager;
-        private readonly IGradeManager _gradeManager;
+        private readonly IGradingService _gradeService;
 
-        public EnrollmentService(ICourseManager courseManager, IStudentManager studentManager, IGradeManager gradeManager)
+        public EnrollmentService(ICourseManager courseManager, IStudentManager studentManager, IGradingService gradeManager)
         {
             _courseManager = courseManager ?? throw new ArgumentNullException(nameof(courseManager));
             _studentManager = studentManager ?? throw new ArgumentNullException(nameof(studentManager));
-            _gradeManager = gradeManager ?? throw new ArgumentNullException(nameof(gradeManager));
+            _gradeService = gradeManager ?? throw new ArgumentNullException(nameof(gradeManager));
         }
 
         public void EnrollStudent(string courseId, string studentId)
@@ -69,7 +70,7 @@ namespace Projects.Src.Services
 
         public void AssignGrade(string courseId, string studentId, double rawScore)
         {
-            _gradeManager.AssignGrade(courseId, studentId, rawScore);
+            _gradeService.AssignGrade(courseId, studentId, rawScore);
             Console.WriteLine($"Grade assigned to student {studentId}: {rawScore} in course {courseId}");
         }
 
@@ -85,7 +86,7 @@ namespace Projects.Src.Services
 
         public double CalculateStudentGPA(string studentId)
         {
-            return _gradeManager.CalculateStudentGPA(studentId);
+            return _gradeService.CalculateStudentGPA(studentId);
         }
     }
 }

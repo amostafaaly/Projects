@@ -62,32 +62,5 @@ namespace Projects.Src.Models;
 		public string GetDetails() =>
 			$"{Level}: {Name} (ID: {Id}, Faculty: {Faculty}, Status: {Status})";
 		public List<Exam> Exams { get; set; } = new List<Exam>();
-		public string ToFileLine()
-		{
-			return $"{Id},{Name},{UniversityEmail},{EnrollmentYear},{Faculty},{Status},{Level}";
-        }
-        public static Student FromFileLine(string line)
-        {
-            var parts = line.Split(',');
-
-            if (parts.Length != 7)
-                throw new FormatException("Invalid line format for Student.");
-
-            var nameParts = parts[1].Split(' ');
-            var firstName = nameParts.Length > 0 ? nameParts[0] : "";
-            var lastName = nameParts.Length > 1 ? nameParts[1] : "";
-
-            return new Student(
-                firstName,
-                lastName,
-                Enum.Parse<Faculty>(parts[4]),
-                int.Parse(parts[3]),
-                parts[0],
-                parts[2]
-            )
-            {
-                Status = Enum.Parse<StudentStatus>(parts[5]),
-                Level = Enum.Parse<StudentLevel>(parts[6])
-            };
-        }
+		
     }

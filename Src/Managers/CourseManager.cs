@@ -16,42 +16,7 @@ namespace Projects.Src.Managers
             return $"{prefix}-{code}";
         }
 
-        public Course CreateCourse(Faculty faculty, string name, int creditHours, string? description = null)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Course name cannot be empty.", nameof(name));
-
-            if (creditHours <= 0)
-                throw new ArgumentException("Credit hours must be greater than zero.", nameof(creditHours));
-
-            var courseCode = GenerateCourseCode(faculty);
-            var course = new Course
-            {
-                Id = courseCode,
-                Name = name.Trim(),
-                CreditHours = creditHours,
-                Description = description?.Trim() ?? string.Empty,
-                Faculty = faculty
-            };
-
-            Add(course);
-            return course;
-        }
-
-        public void AssignInstructor(string courseId, string instructorId)
-        {
-            if (string.IsNullOrWhiteSpace(courseId))
-                throw new ArgumentException("Course ID cannot be empty.", nameof(courseId));
-
-            if (string.IsNullOrWhiteSpace(instructorId))
-                throw new ArgumentException("Instructor ID cannot be empty.", nameof(instructorId));
-
-            var course = GetById(courseId);
-            if (course == null)
-                throw new KeyNotFoundException($"Course with ID '{courseId}' not found.");
-
-            course.InstructorId = instructorId;
-        }
+        
     }
 }
 

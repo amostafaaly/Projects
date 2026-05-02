@@ -1,4 +1,5 @@
 ﻿using Projects.Src.Contracts;
+using Projects.Src.Contracts.IManger;
 using Projects.Src.Managers;
 using Projects.Src.Models;
 using Projects.Src.SeedData;
@@ -18,18 +19,21 @@ var instructorEmailGenerator = new InstructorEmailGenerator();
 var studentManager = new StudentManager();
 var courseManager = new CourseManager();
 var instructorManager = new InstructorManager();
-var enrollmentManager = new EnrollmentManager(courseManager, studentManager);
+var courseService=new CourseService(courseManager,instructorManager);
+
 var examManager = new ExamManager();
-var examService=new ExamService(instructorManager,examManager,studentManager);
+
+
 var resultManager = new ResultManager();
 
-var gradingService = new GradingService();
-var gradeManager = new GradeManager(courseManager, new GradingService());
+var gradingService = new GradingService(courseManager);
+
 
 var studentRegistration = new StudentRegistrationService(studentManager, studentIdGenerator, studentEmailGenerator);
 var instructorRegistration = new InstructorRegistrationService(instructorManager, instructorIdGenerator, instructorEmailGenerator);
-var courseService = new CourseService(courseManager, instructorManager);
-var enrollmentService = new EnrollmentService(courseManager, studentManager, gradeManager);
+
+var enrollmentService = new EnrollmentService(courseManager, studentManager, gradingService);
+var examService = new ExamService(instructorManager, examManager, studentManager, courseManager, enrollmentService);
 var resultService = new ResultService(resultManager, examManager, new ResultFileHandler(), gradingService);
 var seed = new SeedData(
     studentRegistration,

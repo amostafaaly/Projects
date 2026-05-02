@@ -15,30 +15,22 @@ namespace Projects.Src.Services
         private readonly IManager<Exam> _examManager;
         private readonly IStudentManager _studentManager;
         private readonly ICourseManager? _courseManager;
-        private readonly IEnrollmentManager? _enrollmentManager;
+        private readonly IEnrollmentService? _enrollmentService;
 
-        public ExamService(
-            IManager<Instructor> taskManager,
-            IManager<Exam> examManager,
-            IStudentManager studentManager)
-        {
-            _taskManager = taskManager;
-            _examManager = examManager;
-            _studentManager = studentManager;
-        }
+      
 
         public ExamService(
             IManager<Instructor> taskManager,
             IManager<Exam> examManager,
             IStudentManager studentManager,
             ICourseManager courseManager,
-            IEnrollmentManager enrollmentManager)
+            IEnrollmentService enrollmentservice)
         {
             _taskManager = taskManager;
             _examManager = examManager;
             _studentManager = studentManager;
             _courseManager = courseManager ?? throw new ArgumentNullException(nameof(courseManager));
-            _enrollmentManager = enrollmentManager ?? throw new ArgumentNullException(nameof(enrollmentManager));
+            _enrollmentService = enrollmentservice ?? throw new ArgumentNullException(nameof(enrollmentservice));
         }
 
         public void MakeExam(Instructor instructor, Exam exam)
@@ -82,11 +74,11 @@ namespace Projects.Src.Services
 
             var mystudent = _studentManager.GetStudent(student.Id);
 
-            if (_enrollmentManager != null)
+            if (_enrollmentService != null)
             {
                 try
                 {
-                    var studentCourses = _enrollmentManager.GetStudentCourses(student.Id);
+                    var studentCourses = _enrollmentService.GetStudentCourses(student.Id);
                     var isEnrolled = studentCourses.Any(c => c.Id == exam.CourseId);
                     
                     if (!isEnrolled)
