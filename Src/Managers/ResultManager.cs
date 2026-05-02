@@ -8,7 +8,12 @@ namespace Projects.Src.Managers
 {
     public class ResultManager : GenericManager<Result>, IResultManager
     {
-        
+        public void Clear()
+        {
+             var results=GetAll().ToList();
+            results.Clear();
+        }
+
         public List<Result> GetResultByStudentid(string studentid)
         {
             var result=GetAll().Where(s=>s.StudentId==studentid).ToList();

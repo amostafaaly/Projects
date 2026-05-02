@@ -79,5 +79,19 @@ namespace Projects.Src.Managers
             item.ChangeFaculty(entity.Faculty);
             item.ChangeStatus(entity.Status);
         }
+
+        public void update(Instructor entity)
+        {
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            var index = items.FindIndex(x => x.Id == entity.Id);
+
+            if (index == -1)
+                throw new KeyNotFoundException("Instructor not found.");
+
+            items[index] = entity;
+
+        }
     }
 }

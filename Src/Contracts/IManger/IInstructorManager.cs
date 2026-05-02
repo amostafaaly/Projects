@@ -4,5 +4,6 @@ namespace Projects.Src.Contracts.IManger
 {
     public interface IInstructorManager : IManager<Instructor>
     {
+        public void update(Instructor instructor);  
     }
 }

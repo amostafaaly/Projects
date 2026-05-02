@@ -75,6 +75,7 @@ namespace Projects.Src.Services
         public void LoadResults()
         {
             var lines = FileHandler.LoadAll("results.txt");
+            _resultManager.Clear();
             foreach (var line in lines)
             {
                 var result = _fileHandler.FromFileLine(line);
