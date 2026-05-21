@@ -1,32 +1,22 @@
-﻿using Projects.Src.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
+using static Projects.Src.Shared.Enums;
 namespace Projects.Src.Models;
 
-	public class Course : BaseEntity
-	{
-		public Course()
-		{
-			Name = Id ?? "Course";
-		}
+public class Course : BaseEntity
+{
 
-		public string Description { get; set; } = string.Empty;
-		private int _creditHours;
-		public int CreditHours
-		{
-			get => _creditHours;
-			set
-			{
-				if (value <= 0)
-					throw new ArgumentOutOfRangeException(nameof(CreditHours), "Credit hours must be greater than zero.");
-				_creditHours = value;
-			}
-		}
-		public string? InstructorId { get; set; }
-		public List<StudentCourse> Enrollments { get; set; } = new List<StudentCourse>();
-		public Faculty Faculty { get; set; }
-	
-	   public string GetDetails() => $"{Id} {Description}";
-    }
+    public int CreditHours {  get; set; }
+    public string Description { get; set; } = string.Empty;
+    public Faculty Faculty { get; set; }
+
+    public string? InstructorId { get; set; }
+    public virtual Instructor? Instructor { get; set; }
+
+    
+    
+    public virtual List<StudentCourse> Enrollments { get; set; } = new List<StudentCourse>();
+    public Course() { }
+
+    public override string GetDetails()
+                => $"[Course] {Id} — {Name} | Faculty: {Faculty} | Credits: {CreditHours}";
+}

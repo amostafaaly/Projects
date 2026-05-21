@@ -1,57 +1,66 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using static Projects.Src.Shared.Enums;
+
 namespace Projects.Src.Models;
 
-    using Projects.Src.Contracts;
-    using Projects.Src.Models;
+public abstract class Instructor : User
+{
+    public int HiringYear { get; set; }
+    public Faculty Faculty { get; set; }
 
-    public abstract class Instructor : User
+    [NotMapped]
+    public InstructorStatus Status { get; set; }
+
+    protected Instructor() { }
+    protected Instructor(string id, string name, string email, Faculty faculty, int hiringYear)
     {
-        public int HiringYear { get; init; }
-
-        public Faculty Faculty { get;  private set; }
-
-        public InstructorStatus Status { get;  set; }
-
-        public Instructor(
-            string id,
-            string name,
-            string universityEmail,
-            Faculty faculty,
-            int hiringYear)
-        {
-            if (string.IsNullOrWhiteSpace(id))
-                throw new ArgumentException("ID cannot be empty.", nameof(id));
-
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Name cannot be empty.", nameof(name));
-
-            if (string.IsNullOrWhiteSpace(universityEmail))
-                throw new ArgumentException("Email cannot be empty.", nameof(universityEmail));
-
-            if (hiringYear < 1900 || hiringYear > DateTime.UtcNow.Year)
-                throw new ArgumentOutOfRangeException(nameof(hiringYear), "Hiring year is out of valid range.");
-
-            Id = id;
-            Name = name;
-            UniversityEmail = universityEmail;
-            HiringYear = hiringYear;
-            Faculty = faculty;
-           
-        }
-
-        public void ChangeFaculty(Faculty newFaculty)
-        {
-            Faculty = newFaculty;
-        }
-
-        public void ChangeStatus(InstructorStatus newStatus)
-        {
-            Status = newStatus;
-        }
-        public abstract decimal CalculateSalary();
-
-        public string GetDetails() =>
-            $"Instructor: {Name} (ID: {Id}, Faculty: {Faculty}, Status: {Status})";
-        public List<Exam> Exams { get; set; } = new List<Exam>();
-        
-       
+        Id = id;
+        Name = name;
+        UniversityEmail = email;
+        Faculty = faculty;
+        HiringYear = hiringYear;
     }
+
+    public abstract decimal CalculateSalary();
+    public override abstract string GetDetails();
+
+}
+public class FulltimeInstructor : Instructor
+{
+    public decimal MonthlySalary { get; set; }
+
+    public FulltimeInstructor() { }
+
+    public FulltimeInstructor(string id, string name, string email, Faculty faculty, int hiringYear, decimal monthlySalary)
+        : base(id, name, email, faculty, hiringYear)
+    {
+        MonthlySalary = monthlySalary;
+        Status = InstructorStatus.FullTime;
+    }
+
+    public override decimal CalculateSalary() => MonthlySalary;
+
+    public override string GetDetails()
+    => $"[Full-Time] {Name} | ID: {Id} | Faculty: {Faculty} | Monthly Salary: ${MonthlySalary:F2}";
+}
+
+public class ParttimeInstructor : Instructor
+{
+    public decimal HourlyRate { get; set; }
+    public int HoursWorked { get; set; }
+
+    public ParttimeInstructor() { }
+
+    public ParttimeInstructor(string id, string name, string email, Faculty faculty, int hiringYear, decimal hourlyRate, int hoursWorked)
+        : base(id, name, email, faculty, hiringYear)
+    {
+        HourlyRate = hourlyRate;
+        HoursWorked = hoursWorked;
+        Status = InstructorStatus.PartTime;
+    }
+
+    public override decimal CalculateSalary() => HourlyRate * HoursWorked;
+
+    public override string GetDetails()
+            => $"[Part-Time] {Name} | ID: {Id} | Faculty: {Faculty} | Rate: ${HourlyRate}/hr × {HoursWorked}hrs = ${CalculateSalary():F2}";
+}
