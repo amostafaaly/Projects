@@ -1,21 +1,22 @@
-using Projects.Src.DTOs;
+using Projects.Src.DTOs.InstructorDTOs;
 using Projects.Src.Interfaces;
 using Projects.Src.Models;
 using Projects.Src.Shared;
-using Projects.Src.Utilities;
-using static Projects.Src.Shared.Enums;
+
 
 namespace Projects.Src.Services;
 
 public sealed class InstructorService : IInstructorService
 {
     private readonly IRepository<Instructor> _repository;
-    private readonly InstructorIdGenerator _idGenerator = new();
-    private readonly InstructorEmailGenerator _emailGenerator = new();
+    private readonly IIdGenerator<Instructor> _idGenerator;
+    private readonly IEmailGenerator<Instructor> _emailGenerator;
 
-    public InstructorService(IRepository<Instructor> repository)
+    public InstructorService(IRepository<Instructor> repository,IIdGenerator<Instructor> idGenerator,IEmailGenerator<Instructor> emailGenerator)
     {
         _repository = repository;
+        _idGenerator = idGenerator;
+        _emailGenerator = emailGenerator;
     }
 
     public void AddFulltimeInstructor(CreateFulltimeInstructorDto dto)
@@ -26,6 +27,7 @@ public sealed class InstructorService : IInstructorService
             id, $"{dto.FirstName} {dto.LastName}",
             email, dto.Faculty, dto.HiringYear, dto.MonthlySalary);
         _repository.Add(instructor);
+        PrintCredentials(id, email);
     }
 
     public void AddParttimeInstructor(CreateParttimeInstructorDto dto)
@@ -36,6 +38,7 @@ public sealed class InstructorService : IInstructorService
             id, $"{dto.FirstName} {dto.LastName}",
             email, dto.Faculty, dto.HiringYear, dto.HourlyRate, dto.HoursWorked);
         _repository.Add(instructor);
+        PrintCredentials(id, email);
     }
 
     public IEnumerable<Instructor> GetAllInstructors()
@@ -63,4 +66,9 @@ public sealed class InstructorService : IInstructorService
     public IEnumerable<Instructor> SearchByName(string keyword)
         => _repository.Find(i =>
             i.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+    private void PrintCredentials(string id, string email)
+    {
+        System.Console.WriteLine($"\n  Generated ID    : {id}");
+        System.Console.WriteLine($"  Generated Email : {email}");
+    }
 }

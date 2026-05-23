@@ -1,4 +1,4 @@
-using Projects.Src.DTOs;
+using Projects.Src.DTOs.StudentDTOs;
 using Projects.Src.Interfaces;
 using Projects.Src.Models;
 using Projects.Src.Shared;
@@ -10,12 +10,14 @@ namespace Projects.Src.Services;
 public sealed class StudentService : IStudentService
 {
     private readonly IRepository<Student> _repository;
-    private readonly StudentIdGenerator _idGenerator = new();
-    private readonly StudentEmailGenerator _emailGenerator = new();
+    private readonly IIdGenerator<Student> _idGenerator;
+    private readonly IEmailGenerator<Student> _emailGenerator;
 
-    public StudentService(IRepository<Student> repository)
+    public StudentService(IRepository<Student> repository,IIdGenerator<Student> idGenerator, IEmailGenerator<Student> emailGenerator)
     {
         _repository = repository;
+        _idGenerator = idGenerator;
+        _emailGenerator = emailGenerator;
     }
 
     public void AddStudent(CreateStudentDto dto)
@@ -24,6 +26,9 @@ public sealed class StudentService : IStudentService
         var email = _emailGenerator.GenerateEmail(dto.FirstName, dto.LastName);
         var student = new Student(dto.FirstName, dto.LastName, dto.Faculty, dto.EnrollmentYear, id, email);
         _repository.Add(student);
+
+        System.Console.WriteLine($"\n  Generated ID    : {id}");
+        System.Console.WriteLine($"  Generated Email : {email}");
     }
 
     public IEnumerable<Student> GetAllStudents()

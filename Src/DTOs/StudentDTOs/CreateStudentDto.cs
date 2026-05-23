@@ -1,6 +1,6 @@
 using static Projects.Src.Shared.Enums;
 
-namespace Projects.Src.DTOs;
+namespace Projects.Src.DTOs.StudentDTOs;
 
 public sealed class CreateStudentDto
 {

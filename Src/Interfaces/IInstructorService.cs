@@ -1,6 +1,6 @@
 using static Projects.Src.Shared.Enums;
-using Projects.Src.DTOs;
 using Projects.Src.Models;
+using Projects.Src.DTOs.InstructorDTOs;
 
 namespace Projects.Src.Interfaces;
 

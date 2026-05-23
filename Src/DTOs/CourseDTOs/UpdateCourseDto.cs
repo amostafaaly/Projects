@@ -1,6 +1,6 @@
 using static Projects.Src.Shared.Enums;
 
-namespace Projects.Src.DTOs;
+namespace Projects.Src.DTOs.CourseDTOs;
 
 public sealed class UpdateCourseDto
 {
