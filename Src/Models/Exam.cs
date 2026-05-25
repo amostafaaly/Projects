@@ -9,7 +9,5 @@ public class Exam : BaseEntity
     public virtual Course? Course { get; set; }
 
     public Exam(){}
-    public override string GetDetails()
-            => $"[Exam] ID: {Id} | {Name} | Course: {CourseId} | Date: {Date.ToShortDateString()} | Total Marks: {TotalMarks}";
 
 }

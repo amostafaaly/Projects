@@ -9,4 +9,7 @@ public sealed class UpdateCourseDto
     public int CreditHours { get; set; }
     public string Description { get; set; } = string.Empty;
     public Faculty Faculty { get; set; }
+
+    public string GetDetails() =>
+        $"[Course] {Id} — {Name} | Faculty: {Faculty} | Credits: {CreditHours}";
 }

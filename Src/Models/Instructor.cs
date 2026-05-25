@@ -22,7 +22,6 @@ public abstract class Instructor : User
     }
 
     public abstract decimal CalculateSalary();
-    public override abstract string GetDetails();
 
 }
 public class FulltimeInstructor : Instructor
@@ -40,8 +39,6 @@ public class FulltimeInstructor : Instructor
 
     public override decimal CalculateSalary() => MonthlySalary;
 
-    public override string GetDetails()
-    => $"[Full-Time] {Name} | ID: {Id} | Faculty: {Faculty} | Monthly Salary: ${MonthlySalary:F2}";
 }
 
 public class ParttimeInstructor : Instructor
@@ -61,6 +58,4 @@ public class ParttimeInstructor : Instructor
 
     public override decimal CalculateSalary() => HourlyRate * HoursWorked;
 
-    public override string GetDetails()
-            => $"[Part-Time] {Name} | ID: {Id} | Faculty: {Faculty} | Rate: ${HourlyRate}/hr × {HoursWorked}hrs = ${CalculateSalary():F2}";
 }

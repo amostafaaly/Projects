@@ -12,7 +12,7 @@ public sealed class InstructorService : IInstructorService
     private readonly IIdGenerator<Instructor> _idGenerator;
     private readonly IEmailGenerator<Instructor> _emailGenerator;
 
-    public InstructorService(IRepository<Instructor> repository,IIdGenerator<Instructor> idGenerator,IEmailGenerator<Instructor> emailGenerator)
+    public InstructorService(IRepository<Instructor> repository, IIdGenerator<Instructor> idGenerator, IEmailGenerator<Instructor> emailGenerator)
     {
         _repository = repository;
         _idGenerator = idGenerator;
@@ -41,12 +41,37 @@ public sealed class InstructorService : IInstructorService
         PrintCredentials(id, email);
     }
 
-    public IEnumerable<Instructor> GetAllInstructors()
-        => _repository.GetAll();
-
-    public Instructor? GetInstructorById(string id)
-        => _repository.GetById(id);
-
+    private UpdateInstructorDto MapToDto(Instructor i)
+    {
+        if (i is FulltimeInstructor ft)
+            return new FulltimeInstructorUpdateDto
+            {
+                Id = ft.Id,
+                Name = ft.Name,
+                Email = ft.UniversityEmail,
+                Faculty = ft.Faculty,
+                MonthlySalary = ft.MonthlySalary
+            };
+        else
+        {
+            var pt = (ParttimeInstructor)i;
+            return new ParttimeInstructorUpdateDto
+            {
+                Id = pt.Id,
+                Name = pt.Name,
+                Email = pt.UniversityEmail,
+                Faculty = pt.Faculty,
+                HourlyRate = pt.HourlyRate,
+                HoursWorked = pt.HoursWorked
+            };
+        }
+    }
+    public IEnumerable<UpdateInstructorDto> GetAllInstructors() => _repository.GetAll().Select(MapToDto);
+    public UpdateInstructorDto? GetInstructorById(string id)
+    {
+        var instructor = _repository.GetById(id);
+        return instructor == null ? null : MapToDto(instructor);
+    }
     public void UpdateInstructor(UpdateInstructorDto dto)
     {
         var instructor = _repository.GetById(dto.Id)
@@ -63,9 +88,8 @@ public sealed class InstructorService : IInstructorService
         _repository.Remove(instructor);
     }
 
-    public IEnumerable<Instructor> SearchByName(string keyword)
-        => _repository.Find(i =>
-            i.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+    public IEnumerable<UpdateInstructorDto> SearchByName(string keyword)
+        => _repository.Find(i => i.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase)).Select(MapToDto);
     private void PrintCredentials(string id, string email)
     {
         System.Console.WriteLine($"\n  Generated ID    : {id}");

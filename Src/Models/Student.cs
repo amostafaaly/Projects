@@ -26,6 +26,5 @@ public class Student : User
         Level = StudentLevel.Undergraduate;
     }
 
-    public override string GetDetails()
-             => $"[{Level}] {Name} | ID: {Id} | Faculty: {Faculty} | Status: {Status} | Email: {UniversityEmail}";
+
 }

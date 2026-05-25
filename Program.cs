@@ -3,6 +3,7 @@ using Projects.Src.Interfaces;
 using Projects.Src.Models;
 using Projects.Src.Repositories;
 using Projects.Src.Services;
+using Projects.Src.UI;
 using Projects.Src.Utilities;
 namespace Projects.Src
 {
@@ -14,6 +15,8 @@ namespace Projects.Src
             {
                 using var context = new ApplicationDbContext();
                 context.Database.EnsureCreated();
+
+                // SeedData.Initialize(context);
 
                 //generic repos
                 IRepository<Student> studentRepo = new EfRepository<Student>(context);
@@ -36,10 +39,17 @@ namespace Projects.Src
                 ICourseService courseService = new CourseService(courseRepo, studentCourseRepo, studentRepo);
                 IExamService examService = new ExamService(examRepo, courseRepo);
                 IResultService resultService = new ResultService(resultRepo, studentRepo, examRepo);
+
+                //menus
+                var studentMenu = new StudentMenu(studentService);
+                var instructorMenu = new InstructorMenu(instructorService);
+
             }
             catch (Exception ex)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"An error occurred: {ex.Message}");
+                Console.ResetColor();
                 Console.ReadKey();
             }
         }

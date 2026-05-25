@@ -7,5 +7,7 @@
         public string CourseId { get; set; } = string.Empty;
         public DateTime Date { get; set; }
         public int TotalMarks { get; set; }
+        public string GetDetails() =>
+        $"[Exam] ID: {Id} | {Name} | Course: {CourseId} | Date: {Date.ToShortDateString()} | Total Marks: {TotalMarks}";
     }
 }

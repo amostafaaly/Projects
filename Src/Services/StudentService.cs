@@ -13,7 +13,7 @@ public sealed class StudentService : IStudentService
     private readonly IIdGenerator<Student> _idGenerator;
     private readonly IEmailGenerator<Student> _emailGenerator;
 
-    public StudentService(IRepository<Student> repository,IIdGenerator<Student> idGenerator, IEmailGenerator<Student> emailGenerator)
+    public StudentService(IRepository<Student> repository, IIdGenerator<Student> idGenerator, IEmailGenerator<Student> emailGenerator)
     {
         _repository = repository;
         _idGenerator = idGenerator;
@@ -31,12 +31,34 @@ public sealed class StudentService : IStudentService
         System.Console.WriteLine($"  Generated Email : {email}");
     }
 
-    public IEnumerable<Student> GetAllStudents()
-        => _repository.GetAll();
+    public IEnumerable<UpdateStudentDto> GetAllStudents()
+    {
+        return _repository.GetAll().Select(s => new UpdateStudentDto
+        {
+            Id = s.Id,
+            Name = s.Name,
+            Email = s.UniversityEmail,
+            Faculty = s.Faculty,
+            Status = s.Status,
+            Level = s.Level
+        });
+    }
 
-    public Student? GetStudentById(string id)
-        => _repository.GetById(id);
+    public UpdateStudentDto? GetStudentById(string id)
+    {
+        var s = _repository.GetById(id);
+        if (s == null) return null;
 
+        return new UpdateStudentDto
+        {
+            Id = s.Id,
+            Name = s.Name,
+            Email = s.UniversityEmail,
+            Faculty = s.Faculty,
+            Status = s.Status,
+            Level = s.Level
+        };
+    }
     public void UpdateStudent(UpdateStudentDto dto)
     {
         var student = _repository.GetById(dto.Id)
@@ -55,6 +77,17 @@ public sealed class StudentService : IStudentService
         _repository.Remove(student);
     }
 
-    public IEnumerable<Student> SearchStudentsByFaculty(Faculty faculty)
-        => _repository.Find(s => s.Faculty == faculty && s.Status == StudentStatus.Active);
+    public IEnumerable<UpdateStudentDto> SearchStudentsByFaculty(Faculty faculty)
+    {
+        return _repository.Find(s => s.Faculty == faculty && s.Status == StudentStatus.Active)
+            .Select(s => new UpdateStudentDto
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Email = s.UniversityEmail,
+                Faculty = s.Faculty,
+                Status = s.Status,
+                Level = s.Level
+            });
+    }
 }

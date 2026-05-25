@@ -7,9 +7,9 @@ namespace Projects.Src.Interfaces;
 public interface IStudentService
 {
     void AddStudent(CreateStudentDto dto);
-    IEnumerable<Student> GetAllStudents();
-    Student? GetStudentById(string id);
+    IEnumerable<UpdateStudentDto> GetAllStudents();
+    UpdateStudentDto? GetStudentById(string id);
     void UpdateStudent(UpdateStudentDto dto);
     void DeleteStudent(string id);
-    IEnumerable<Student> SearchStudentsByFaculty(Faculty faculty);
+    IEnumerable<UpdateStudentDto> SearchStudentsByFaculty(Faculty faculty);
 }

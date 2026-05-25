@@ -7,5 +7,7 @@
         public int Score { get; set; }
         public int TotalMarks { get; set; }
         public double Percentage { get; set; }
+        public string GetDetails() =>
+        $"[Result] Student: {StudentId} | Exam: {ExamId} | Score: {Score}/{TotalMarks} ({Percentage}%)";
     }
 }

@@ -15,6 +15,4 @@ public class Result : BaseEntity
 
     public Result() { }
 
-    public override string GetDetails()
-            => $"[Result] Student: {StudentId} | Exam: {ExamId} | Score: {Score}/{TotalMarks} ({Percentage}%)";
 }

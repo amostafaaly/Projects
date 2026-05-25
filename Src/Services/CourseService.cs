@@ -81,11 +81,15 @@ public sealed class CourseService : ICourseService
         _studentCourseRepo.Update(enrollment);
     }
 
-    public IEnumerable<Course> GetAllCourses()
-        => _repository.GetAll();
+    public IEnumerable<UpdateCourseDto> GetAllCourses()
+        => _repository.GetAll().Select(c => new UpdateCourseDto { Id = c.Id, Name = c.Name, CreditHours = c.CreditHours, Faculty = c.Faculty });
 
-    public Course? GetCourseById(string id)
-        => _repository.GetById(id);
+    public UpdateCourseDto? GetCourseById(string id)
+    {
+        var c = _repository.GetById(id);
+        if (c == null) return null;
+        return new UpdateCourseDto { Id = c.Id, Name = c.Name, CreditHours = c.CreditHours, Faculty = c.Faculty };
+    }
 
     public void UpdateCourse(UpdateCourseDto dto)
     {
@@ -105,7 +109,7 @@ public sealed class CourseService : ICourseService
         _repository.Remove(course);
     }
 
-    public IEnumerable<Course> GetCoursesByFaculty(Faculty faculty)
-        => _repository.Find(c => c.Faculty == faculty)
-                      .OrderBy(c => c.Name);
+    public IEnumerable<UpdateCourseDto> GetCoursesByFaculty(Faculty faculty)
+        => _repository.Find(c => c.Faculty == faculty).OrderBy(c => c.Name)
+        .Select(c => new UpdateCourseDto { Id = c.Id, Name = c.Name, CreditHours = c.CreditHours, Faculty = c.Faculty });
 }

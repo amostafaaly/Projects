@@ -17,6 +17,4 @@ public class Course : BaseEntity
     public virtual List<StudentCourse> Enrollments { get; set; } = new List<StudentCourse>();
     public Course() { }
 
-    public override string GetDetails()
-                => $"[Course] {Id} — {Name} | Faculty: {Faculty} | Credits: {CreditHours}";
 }
