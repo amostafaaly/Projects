@@ -43,6 +43,13 @@ namespace Projects.Src
                 //menus
                 var studentMenu = new StudentMenu(studentService);
                 var instructorMenu = new InstructorMenu(instructorService);
+                var courseMenu = new CourseMenu(courseService);
+                var examMenu = new ExamMenu(examService);
+                var resultMenu = new ResultMenu(resultService);
+
+                var mainMenu = new MainMenu(studentService, instructorService,
+                                            courseService, examService, resultService);
+                mainMenu.Run();
 
             }
             catch (Exception ex)
