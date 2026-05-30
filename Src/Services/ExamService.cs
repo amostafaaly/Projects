@@ -2,17 +2,27 @@
 using Projects.Src.Interfaces;
 using Projects.Src.Models;
 using Projects.Src.Shared;
-
+using Projects.Src.Utilities;
 namespace Projects.Src.Services
 {
     public class ExamService : IExamService
     {
         private readonly IRepository<Exam> _examRepo;
         private readonly IRepository<Course> _courseRepo;
+        private readonly ExamIdGenerator _idGenerator = new();
 
         public ExamService(IRepository<Exam> examRepo, IRepository<Course> courseRepo)
         {
-            _examRepo = examRepo; _courseRepo = courseRepo;
+            _examRepo = examRepo;
+            _courseRepo = courseRepo;
+            var allExams = _examRepo.GetAll().ToList();
+    if (allExams.Any())
+    {
+        var maxId = allExams
+            .Select(e => int.TryParse(e.Id.Replace("EXM", ""), out int n) ? n : 0)
+            .Max();
+        _idGenerator.SetCounter(maxId);
+    }
         }
 
         public void CreateExam(CreateExamDTO dto)
@@ -23,7 +33,7 @@ namespace Projects.Src.Services
 
             var exam = new Exam
             {
-                Id = Guid.NewGuid().ToString("N")[..8],
+                Id = _idGenerator.GenerateId(),
                 CourseId = dto.CourseId,
                 Date = dto.Date,
                 TotalMarks = dto.TotalMarks,

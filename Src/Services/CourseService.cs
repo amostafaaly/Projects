@@ -20,6 +20,14 @@ public sealed class CourseService : ICourseService
         _repository = repository;
         _studentCourseRepo = studentCourseRepo;
         _studentRepo = studentRepo;
+        var allCourses = _repository.GetAll().ToList();
+    if (allCourses.Any())
+    {
+        var maxId = allCourses
+            .Select(c => int.TryParse(c.Id.Replace("CRS", ""), out int n) ? n : 0)
+            .Max();
+        _idGenerator.SetCounter(maxId);
+    }
     }
 
     public void CreateCourse(CreateCourseDto dto)

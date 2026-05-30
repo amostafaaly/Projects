@@ -25,7 +25,7 @@ namespace Projects.Src.Repositories
             }
             catch (Exception ex)
             {
-                throw new DatabaseOperationException("Add", ex.Message);
+        throw new DatabaseOperationException("Add", ex.InnerException?.Message ?? ex.Message);
             }
         }
 

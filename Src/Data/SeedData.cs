@@ -28,8 +28,9 @@ public class SeedData
 
     public void Initialize()
     {
-        if (_studentService.GetAllStudents().Any())
-            return;
+        if (_studentService.GetAllStudents().Any() || 
+        _courseService.GetAllCourses().Any())
+         return;
 
         var student1 = new CreateStudentDto { FirstName = "Mohamed", LastName = "Ali", Faculty = Faculty.CS, EnrollmentYear = 2022 };
         var student2 = new CreateStudentDto { FirstName = "Sara", LastName = "Hassan", Faculty = Faculty.Engineering, EnrollmentYear = 2021 };

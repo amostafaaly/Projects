@@ -32,14 +32,24 @@ namespace Projects.Src.Utilities
     public class CourseIdGenerator
     {
         private static int _counter = 1;
-        public string GenerateId()
-            => $"CRS{_counter++:D3}";
+        public void SetCounter(int startFrom)
+    {
+        _counter = startFrom + 1;
+    }
+
+    public string GenerateId()
+        => $"CRS{_counter++:D3}";
     }
 
     public class ExamIdGenerator
     {
         private static int _counter = 1;
-        public string GenerateId()
-            => $"EXM{_counter++:D3}";
+        public void SetCounter(int startFrom)
+    {
+        _counter = startFrom + 1;
+    }
+
+    public string GenerateId()
+        => $"EXM{_counter++:D3}";
     }
 }
