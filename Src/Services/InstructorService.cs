@@ -2,6 +2,7 @@ using Projects.Src.DTOs.InstructorDTOs;
 using Projects.Src.Interfaces;
 using Projects.Src.Models;
 using Projects.Src.Shared;
+using static Projects.Src.Shared.Enums;
 
 
 namespace Projects.Src.Services;
@@ -21,6 +22,11 @@ public sealed class InstructorService : IInstructorService
 
     public void AddFulltimeInstructor(CreateFulltimeInstructorDto dto)
     {
+        if (dto.MonthlySalary < 0)
+            throw new SchoolException("Monthly salary cannot be negative.");
+        if (!Enum.IsDefined(dto.Faculty))
+            throw new SchoolException("Invalid Faculty selection.");
+
         var id = _idGenerator.GenerateId(dto.HiringYear);
         var email = _emailGenerator.GenerateEmail(dto.FirstName, dto.LastName);
         var instructor = new FulltimeInstructor(
@@ -32,6 +38,11 @@ public sealed class InstructorService : IInstructorService
 
     public void AddParttimeInstructor(CreateParttimeInstructorDto dto)
     {
+        if (dto.HourlyRate < 0 || dto.HoursWorked < 0)
+            throw new SchoolException("Hourly rate and hours worked cannot be negative.");
+        if (!Enum.IsDefined(dto.Faculty))
+            throw new SchoolException("Invalid Faculty selection.");
+
         var id = _idGenerator.GenerateId(dto.HiringYear);
         var email = _emailGenerator.GenerateEmail(dto.FirstName, dto.LastName);
         var instructor = new ParttimeInstructor(
@@ -76,8 +87,31 @@ public sealed class InstructorService : IInstructorService
     {
         var instructor = _repository.GetById(dto.Id)
             ?? throw new EntityNotFoundException(nameof(Instructor), dto.Id);
+        if (!Enum.IsDefined(dto.Faculty))
+            throw new SchoolException("Invalid Faculty selection.");
+
         instructor.Name = dto.Name;
+        //regenerate new Email
+        var nameParts = dto.Name.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+        string firstName = nameParts.Length > 0 ? nameParts[0] : "instructor";
+        string lastName = nameParts.Length > 1 ? nameParts[1] : "";
+        instructor.UniversityEmail = _emailGenerator.GenerateEmail(firstName, lastName);
         instructor.Faculty = dto.Faculty;
+
+        if (instructor is FulltimeInstructor ft && dto is FulltimeInstructorUpdateDto ftDto)
+        {
+            //update salary
+            if (ftDto.MonthlySalary < 0) throw new SchoolException("Salary cannot be negative.");
+            ft.MonthlySalary = ftDto.MonthlySalary;
+        }
+        else if (instructor is ParttimeInstructor pt && dto is ParttimeInstructorUpdateDto ptDto)
+        {
+            //update rates
+            if (ptDto.HourlyRate < 0 || ptDto.HoursWorked < 0) throw new SchoolException("Rates/Hours cannot be negative.");
+            pt.HourlyRate = ptDto.HourlyRate;
+            pt.HoursWorked = ptDto.HoursWorked;
+        }
+
         _repository.Update(instructor);
     }
 

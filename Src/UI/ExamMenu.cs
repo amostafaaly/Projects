@@ -73,7 +73,7 @@ namespace Projects.Src.UI
                             {
                                 Id = updateId,
                                 Name = InputValidator.GetValidString("New Exam Name: "),
-                                CourseId = InputValidator.GetValidString("New Course ID: "),
+                                CourseId = InputValidator.GetValidString("Course ID: "),
                                 Date = InputValidator.GetValidDate("New Exam Date (MM/DD/YYYY): "),
                                 TotalMarks = InputValidator.GetValidInt("New Total Marks: ")
                             };

@@ -13,10 +13,9 @@ namespace Projects.Src
         {
             try
             {
+                //ensure database is created
                 using var context = new ApplicationDbContext();
                 context.Database.EnsureCreated();
-
-                // SeedData.Initialize(context);
 
                 //generic repos
                 IRepository<Student> studentRepo = new EfRepository<Student>(context);

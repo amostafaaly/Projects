@@ -16,13 +16,12 @@ namespace Projects.Src.Services
             _examRepo = examRepo;
             _courseRepo = courseRepo;
             var allExams = _examRepo.GetAll().ToList();
-    if (allExams.Any())
-    {
-        var maxId = allExams
-            .Select(e => int.TryParse(e.Id.Replace("EXM", ""), out int n) ? n : 0)
-            .Max();
-        _idGenerator.SetCounter(maxId);
-    }
+            if (allExams.Any())
+            {
+                var maxId = allExams
+                    .Max(e => int.TryParse(e.Id.Replace("EXM", ""), out int n) ? n : 0);
+                _idGenerator.SetCounter(maxId);
+            }
         }
 
         public void CreateExam(CreateExamDTO dto)

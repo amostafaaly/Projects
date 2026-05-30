@@ -23,7 +23,7 @@ public class Student : User
         EnrollmentYear = year;
         Faculty = faculty;
         Status = StudentStatus.Active;
-        Level = StudentLevel.Undergraduate;
+        Level = StudentLevel.Freshman;
     }
 
 

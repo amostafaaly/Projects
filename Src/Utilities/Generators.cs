@@ -33,23 +33,29 @@ namespace Projects.Src.Utilities
     {
         private static int _counter = 1;
         public void SetCounter(int startFrom)
-    {
-        _counter = startFrom + 1;
-    }
+        {
+            _counter = startFrom + 1;
+        }
 
-    public string GenerateId()
-        => $"CRS{_counter++:D3}";
+        public string GenerateId()
+            => $"CRS{_counter++:D3}";
     }
 
     public class ExamIdGenerator
     {
         private static int _counter = 1;
         public void SetCounter(int startFrom)
-    {
-        _counter = startFrom + 1;
+        {
+            _counter = startFrom + 1;
+        }
+
+        public string GenerateId()
+            => $"EXM{_counter++:D3}";
     }
 
-    public string GenerateId()
-        => $"EXM{_counter++:D3}";
+    public class ResultIdGenerator
+    {
+        public string GenerateId()
+            => Guid.NewGuid().ToString("N")[..8];
     }
 }

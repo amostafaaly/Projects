@@ -2,6 +2,7 @@
 using Projects.Src.Interfaces;
 using Projects.Src.Models;
 using Projects.Src.Shared;
+using Projects.Src.Utilities;
 
 namespace Projects.Src.Services
 {
@@ -10,6 +11,7 @@ namespace Projects.Src.Services
         private readonly IRepository<Result> _resultRepo;
         private readonly IRepository<Student> _studentRepo;
         private readonly IRepository<Exam> _examRepo;
+        private readonly ResultIdGenerator _idGenerator = new();
 
         public ResultService(IRepository<Result> resultRepo, IRepository<Student> studentRepo, IRepository<Exam> examRepo)
         { 
@@ -22,13 +24,17 @@ namespace Projects.Src.Services
             
             var exam = _examRepo.GetById(dto.ExamId);
             if (exam == null) throw new EntityNotFoundException(nameof(Exam), dto.ExamId);
+            
+            bool resultExists = _resultRepo.Find(r => r.StudentId == dto.StudentId && r.ExamId == dto.ExamId).Any();
+            if (resultExists)
+                throw new SchoolException($"A result already exists for student '{dto.StudentId}' in exam '{dto.ExamId}'. Please use the Update menu instead.");
 
             if (dto.Score < 0 || dto.Score > exam.TotalMarks)
                 throw new SchoolException($"Score ({dto.Score}) must be between 0 and {exam.TotalMarks}.");
 
             var result = new Result
             {
-                Id = Guid.NewGuid().ToString("N")[..8],
+                Id = _idGenerator.GenerateId(),
                 Name = $"Result — {dto.StudentId} on {dto.ExamId}",
                 StudentId = dto.StudentId,
                 ExamId = dto.ExamId,

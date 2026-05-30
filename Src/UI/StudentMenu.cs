@@ -90,7 +90,7 @@ namespace Projects.Src.UI
                             {
                                 Id = InputValidator.GetValidString("Student ID to Update: "),
                                 Name = InputValidator.GetValidString("New Full Name: "),
-                                Faculty = (Faculty)InputValidator.GetValidInt("New Faculty (0-4): "),
+                                Faculty = (Faculty)InputValidator.GetValidInt("New Faculty (0=CS, 1=Eng, 2=Arts, 3=Bus, 4=Sci): "),
                                 Status = (StudentStatus)InputValidator.GetValidInt("New Status (0=Active, 1=Graduate, 2=Withdrawn): "),
                                 Level = (StudentLevel)InputValidator.GetValidInt("New Level (0=Freshman, 1=Sophomore, 2=Junior, 3=Senior): ")
                             };

@@ -22,6 +22,9 @@ public sealed class StudentService : IStudentService
 
     public void AddStudent(CreateStudentDto dto)
     {
+        if (!Enum.IsDefined(dto.Faculty))
+            throw new SchoolException("Invalid Faculty selection.");
+
         var id = _idGenerator.GenerateId(dto.EnrollmentYear);
         var email = _emailGenerator.GenerateEmail(dto.FirstName, dto.LastName);
         var student = new Student(dto.FirstName, dto.LastName, dto.Faculty, dto.EnrollmentYear, id, email);
@@ -63,7 +66,17 @@ public sealed class StudentService : IStudentService
     {
         var student = _repository.GetById(dto.Id)
             ?? throw new EntityNotFoundException(nameof(Student), dto.Id);
+        if (!Enum.IsDefined(dto.Faculty)) throw new SchoolException("Invalid Faculty selection.");
+        if (!Enum.IsDefined(dto.Status)) throw new SchoolException("Invalid Student Status selection.");
+        if (!Enum.IsDefined(dto.Level)) throw new SchoolException("Invalid Student Level selection.");
+
         student.Name = dto.Name;
+        //regenerate new Email
+        var nameParts = dto.Name.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+        string firstName = nameParts.Length > 0 ? nameParts[0] : "student";
+        string lastName = nameParts.Length > 1 ? nameParts[1] : "";
+
+        student.UniversityEmail = _emailGenerator.GenerateEmail(firstName, lastName);
         student.Faculty = dto.Faculty;
         student.Status = dto.Status;
         student.Level = dto.Level;

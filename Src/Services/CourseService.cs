@@ -21,17 +21,20 @@ public sealed class CourseService : ICourseService
         _studentCourseRepo = studentCourseRepo;
         _studentRepo = studentRepo;
         var allCourses = _repository.GetAll().ToList();
-    if (allCourses.Any())
-    {
-        var maxId = allCourses
-            .Select(c => int.TryParse(c.Id.Replace("CRS", ""), out int n) ? n : 0)
-            .Max();
-        _idGenerator.SetCounter(maxId);
-    }
+        if (allCourses.Any())
+        {
+            var maxId = allCourses
+                .Max(c => int.TryParse(c.Id.Replace("CRS", ""), out int n) ? n : 0);
+            _idGenerator.SetCounter(maxId);
+        }
     }
 
     public void CreateCourse(CreateCourseDto dto)
     {
+        if (dto.CreditHours <= 0)
+            throw new SchoolException("Credit hours must be a positive number.");
+        if (!Enum.IsDefined(dto.Faculty))
+            throw new SchoolException("Invalid Faculty selection.");
         var course = new Course
         {
             Id = _idGenerator.GenerateId(),
@@ -101,6 +104,11 @@ public sealed class CourseService : ICourseService
 
     public void UpdateCourse(UpdateCourseDto dto)
     {
+        if (dto.CreditHours <= 0)
+            throw new SchoolException("Credit hours must be a positive number.");
+        if (!Enum.IsDefined(dto.Faculty))
+            throw new SchoolException("Invalid Faculty selection.");
+
         var course = _repository.GetById(dto.Id)
             ?? throw new EntityNotFoundException(nameof(Course), dto.Id);
         course.Name = dto.Name;

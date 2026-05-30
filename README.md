@@ -6,7 +6,7 @@ giving administrators a fast and reliable way to track academic data.
 
 ## Team
 - Esraa Ahmed
-- Moamen Muhammad
+- Moamen Mohamed
 
 ## Domain
 School / University Management System
