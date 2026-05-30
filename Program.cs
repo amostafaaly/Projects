@@ -40,6 +40,11 @@ namespace Projects.Src
                 IExamService examService = new ExamService(examRepo, courseRepo);
                 IResultService resultService = new ResultService(resultRepo, studentRepo, examRepo);
 
+                //seed
+                var seed = new SeedData(studentService, instructorService,
+                                        courseService, examService, resultService);
+                seed.Initialize();
+
                 //menus
                 var studentMenu = new StudentMenu(studentService);
                 var instructorMenu = new InstructorMenu(instructorService);

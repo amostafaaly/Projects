@@ -122,7 +122,9 @@ namespace Projects.Src.UI
                                 {
                                     Id = updateId,
                                     Name = newName,
-                                    Faculty = newFaculty
+                                    Faculty = newFaculty,
+                                    MonthlySalary = InputValidator.GetValidDecimal("New Monthly Salary: ")
+
                                 };
                             }
                             else
@@ -131,7 +133,9 @@ namespace Projects.Src.UI
                                 {
                                     Id = updateId,
                                     Name = newName,
-                                    Faculty = newFaculty
+                                    Faculty = newFaculty,
+                                    HourlyRate = InputValidator.GetValidDecimal("New Hourly Rate: "),
+                                    HoursWorked = InputValidator.GetValidInt("New Hours Worked: ")
                                 };
                             }
 

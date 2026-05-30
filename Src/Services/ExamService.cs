@@ -31,7 +31,6 @@ namespace Projects.Src.Services
             };
 
             _examRepo.Add(exam);
-            Console.WriteLine($"\n  Generated Exam ID: {exam.Id}");
         }
 
         public IEnumerable<UpdateExamDto> GetAllExams()
@@ -48,7 +47,7 @@ namespace Projects.Src.Services
         public UpdateExamDto GetExamById(string id)
         {
             var exam = _examRepo.GetById(id);
-            if (exam == null) throw new EntityNotFoundException(nameof(Course), id);
+            if (exam == null) throw new EntityNotFoundException(nameof(Exam), id);
 
             return new UpdateExamDto
             {

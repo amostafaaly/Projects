@@ -12,7 +12,7 @@ namespace Projects.Src.Services
         private readonly IRepository<Exam> _examRepo;
 
         public ResultService(IRepository<Result> resultRepo, IRepository<Student> studentRepo, IRepository<Exam> examRepo)
-        {
+        { 
             _resultRepo = resultRepo; _studentRepo = studentRepo; _examRepo = examRepo;
         }
 
@@ -73,7 +73,8 @@ namespace Projects.Src.Services
             if (result == null)
                 throw new EntityNotFoundException(nameof(Result), $"{studentId}/{examId}");
 
-            var exam = _examRepo.GetById(examId);
+            var exam = _examRepo.GetById(examId)
+                ?? throw new EntityNotFoundException(nameof(Exam), examId);
             if (newScore < 0 || newScore > exam.TotalMarks)
                 throw new SchoolException($"Score ({newScore}) must be between 0 and {exam.TotalMarks}.");
 
